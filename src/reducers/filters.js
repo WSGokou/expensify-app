@@ -36,6 +36,12 @@ export default (state = filtersReducerDefaultState, action) => {
         ...state,
         endDate: action.endDate,
       };
+    case "RESET_DATE_FILTER":
+      return {
+        ...state,
+        startDate: undefined,
+        endDate: undefined,
+      };
     default:
       return state;
   }

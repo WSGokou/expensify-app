@@ -25,3 +25,7 @@ export const setEndDate = (endDate) => ({
   type: "SET_END_DATE",
   endDate,
 });
+
+export const resetDateFilter = () => ({
+  type: "RESET_DATE_FILTER",
+});

@@ -13,7 +13,7 @@ exports[`should render ExpenseListItem with fixture data 1`] = `
     £
     1,095.00
      -
-    1st, January, 1970
+    1st January, 1970
   </p>
 </div>
 `;

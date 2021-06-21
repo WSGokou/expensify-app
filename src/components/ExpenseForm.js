@@ -1,10 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import moment from "moment";
-import "react-dates/initialize";
-import DatePicker from "react-datepicker";
-import { SingleDatePicker } from "react-dates";
-
-const now = moment();
+import DayPickerInput from "react-day-picker/DayPickerInput";
+import { formatDate, parseDate } from "react-day-picker/moment";
 export default class ExpenseForm extends React.Component {
   constructor(props) {
     super(props);
@@ -13,9 +10,7 @@ export default class ExpenseForm extends React.Component {
       description: props.expense ? props.expense.description : "",
       note: props.expense ? props.expense.note : "",
       amount: props.expense ? (props.expense.amount / 100).toString() : "",
-      // createdAt: props.expense ? props.expense.createdAt : new Date(),
       createdAt: props.expense ? moment(props.expense.createdAt) : moment(),
-      calendarSelected: false,
       error: "",
     };
   }
@@ -38,9 +33,6 @@ export default class ExpenseForm extends React.Component {
     if (createdAt) {
       this.setState(() => ({ createdAt }));
     }
-  };
-  onFocusChange = (focused) => {
-    this.setState(() => ({ calenderSelected: focused }));
   };
   onSubmit = (e) => {
     e.preventDefault();
@@ -76,13 +68,12 @@ export default class ExpenseForm extends React.Component {
             onChange={this.onAmountChange}
           />
 
-          <SingleDatePicker
-            date={this.state.createdAt}
-            onDateChange={this.onDateChange}
-            focused={this.state.calendarFocused}
-            onFocusChange={this.onFocusChange}
-            numberOfMonths={1}
-            isOutsideRange={() => false}
+          <DayPickerInput
+            value={formatDate(this.state.createdAt)}
+            formatDate={formatDate}
+            parseDate={parseDate}
+            placeholder={this.state.createdAt}
+            onDayChange={this.onDateChange}
           />
           <textarea
             placeholder="Add a note for your expense (optional)"
@@ -95,8 +86,3 @@ export default class ExpenseForm extends React.Component {
     );
   }
 }
-// <DatePicker
-// selected={this.state.createdAt}
-// onSelect={this.onFocusChange}
-// onChange={(createdAt) => this.onDateChange(createdAt)}
-// />
