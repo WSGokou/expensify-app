@@ -1,55 +1,73 @@
 const path = require("path");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-module.exports = (env) => {
-  const mode = env.production ? "production" : "development";
-  console.log("mode", mode);
-  return {
-    mode: mode,
-    entry: "./src/app.js",
-    output: {
-      path: path.join(__dirname, "public", "dist"),
-      filename: "bundle.js",
-    },
-    module: {
-      rules: [
-        {
+let mode = "development";
+let target = "web";
+const plugins = [
+  new CleanWebpackPlugin(),
+  new MiniCssExtractPlugin(),
+  new HtmlWebpackPlugin({
+    template: "./src/index.html",
+  }),
+];
+
+if (process.env.mode === "production") {
+  mode = "production";
+  target = "browserslist";
+} else {
+  plugins.push(new ReactRefreshWebpackPlugin());
+}
+
+module.exports = {
+  mode: mode,
+  target: target,
+
+  entry: "./src/index.js",
+
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    assetModuleFilename: "images/[hash][ext][query]",
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: "asset",
+      },
+      {
+        test: /\.(s[ac]|c)ss$/i,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: { publicPath: "" },
+          },
+          "css-loader",
+          "postcss-loader",
+          "sass-loader",
+        ],
+      },
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: {
           loader: "babel-loader",
-          test: /\.js$/,
-          exclude: /node_modules/,
         },
-        {
-          test: /\.s?css$/,
-          use: [
-            MiniCssExtractPlugin.loader,
-
-            {
-              loader: "css-loader",
-              options: {
-                sourceMap: true,
-              },
-            },
-            {
-              loader: "sass-loader",
-              options: {
-                sourceMap: true,
-              },
-            },
-          ],
-        },
-      ],
-    },
-    plugins: [
-      new MiniCssExtractPlugin({
-        filename: "[name].css",
-      }),
+      },
     ],
-    devtool: mode === "production" ? "source-map" : "inline-source-map",
-    devServer: {
-      contentBase: path.join(__dirname, "public"),
-      historyApiFallback: true,
-      publicPath: "/dist/",
-    },
-  };
+  },
+
+  plugins: plugins,
+  resolve: {
+    extensions: [".js", ".jsx"],
+  },
+
+  devtool: "source-map",
+  devServer: {
+    contentBase: "./dist",
+    hot: true,
+  },
 };

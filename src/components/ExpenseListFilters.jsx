@@ -10,6 +10,7 @@ import {
 } from "../actions/filters";
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import { formatDate, parseDate } from "react-day-picker/moment";
+
 export class ExpenseListFilters extends React.Component {
   onFromDateChange = (startDate) => {
     this.props.setStartDate(startDate);
