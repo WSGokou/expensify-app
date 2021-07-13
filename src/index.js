@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import AppRouter from "./routers/AppRouter";
 import configureStore from "./store/configureStore";
 import "react-day-picker/lib/style.css";
+import "./firebase/firebase";
 
 const store = configureStore();
 

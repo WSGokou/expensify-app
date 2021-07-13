@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "clean": "remove dist",
-    "test": "jest",
+    "test": "cross-env NODE_ENV=test jest",
     "start": "node server/server.js",
     "dev-server": "webpack serve",
     "watch": "webpack --watch",
@@ -19,7 +19,9 @@
     "babel-jest": "^27.0.6",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "cross-env": "^7.0.3",
     "css-loader": "^5.2.6",
+    "dotenv": "^10.0.0",
     "enzyme": "^3.11.0",
     "enzyme-to-json": "^3.6.2",
     "html-webpack-plugin": "^5.3.2",
@@ -30,6 +32,7 @@
     "postcss-preset-env": "^6.7.0",
     "react-refresh": "^0.10.0",
     "react-test-renderer": "^17.0.2",
+    "redux-mock-store": "^1.5.4",
     "sass": "^1.35.2",
     "sass-loader": "^12.1.0",
     "webpack": "^5.43.0",
@@ -38,12 +41,14 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "firebase": "^8.7.1",
     "moment": "^2.29.1",
     "numeral": "^2.0.6",
     "react": "^17.0.2",
     "react-day-picker": "^7.4.10",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.4",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "redux-thunk": "^2.3.0"
   }
 }
