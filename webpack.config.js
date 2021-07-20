@@ -5,6 +5,14 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
+process.env.NODE_ENV = process.env.NODE_ENV || "development";
+
+if (process.env.NODE_ENV === "test") {
+  require("dotenv").config({ path: ".env.test" });
+} else if (process.env.NODE_ENV === "development") {
+  require("dotenv").config({ path: ".env.development" });
+}
+
 let mode = "development";
 let target = "web";
 const plugins = [
@@ -36,18 +44,11 @@ const plugins = [
   }),
 ];
 
-process.env.NODE_ENV = process.env.NODE_ENV || "development";
-
-if (process.env.NODE_ENV === "test") {
-  require("dotenv").config({ path: ".env.test" });
-} else if (process.env.NODE_ENV === "development") {
-  require("dotenv").config({ path: ".env.development" });
-  plugins.push(new ReactRefreshWebpackPlugin());
-}
-
 if (process.env.mode === "production") {
   mode = "production";
   target = "browserslist";
+} else {
+  plugins.push(new ReactRefreshWebpackPlugin());
 }
 
 module.exports = {
